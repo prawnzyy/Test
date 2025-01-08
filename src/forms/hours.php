@@ -7,13 +7,17 @@ $pageTitle = "Form";
 $teachingHoursDoneErr = $teachingHoursTotalErr = $researchHoursDoneErr = $researchHoursTotalErr = $otherHoursDoneErr = $otherHoursTotalErr = "";
 $teachingHoursDone = $teachingHoursTotal = $researchHoursDone = $researchHoursTotal = $otherHoursDone = $otherHoursTotal = "";
 
+// Array to check if field should be updated
+$update = array(False, False, False, False, False, False);
+$order = array("teachingHoursDone", "teachingHoursTotal", "researchHoursDone", "researchHoursTotal", "otherHoursDone", "otherHoursTotal");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validation for teachingHoursDone
     if (!empty($_POST["teachingHoursDone"]) && (!is_numeric($_POST["teachingHoursDone"]) || $_POST["teachingHoursDone"] < 0)) {
         $teachingHoursDoneErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["teachingHoursDone"])) {
-            $_SESSION["teachingHoursDone"] = (int)htmlspecialchars($_POST["teachingHoursDone"]);
+            $update[0] = True;
         }
     }
 
@@ -22,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $teachingHoursTotalErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["teachingHoursTotal"])) {
-            $_SESSION["teachingHoursTotal"] = (int)htmlspecialchars($_POST["teachingHoursTotal"]);
+            $update[1] = True;
         }
     }
 
@@ -31,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $researchHoursDoneErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["researchHoursDone"])) {
-            $_SESSION["researchHoursDone"] = (int)htmlspecialchars($_POST["researchHoursDone"]);
+            $update[2] = True;
         }
     }
 
@@ -40,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $researchHoursTotalErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["researchHoursTotal"])) {
-            $_SESSION["researchHoursTotal"] = (int)htmlspecialchars($_POST["researchHoursTotal"]);
+            $update[3] = True;
         }
     }
 
@@ -49,22 +53,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $otherHoursDoneErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["otherHoursDone"])) {
-            $_SESSION["otherHoursDone"] = (int)htmlspecialchars($_POST["otherHoursDone"]);
+            $update[4] = True;
         }
     }
 
-// Validation for otherHoursTotal
+    // Validation for otherHoursTotal
     if (!empty($_POST["otherHoursTotal"]) && (!is_numeric($_POST["otherHoursTotal"]) || $_POST["otherHoursTotal"] < 0)) {
         $otherHoursTotalErr = "Please enter a valid non-negative number.";
     } else {
         if (!empty($_POST["otherHoursTotal"])) {
-            $_SESSION["otherHoursTotal"] = (int)htmlspecialchars($_POST["otherHoursTotal"]);
+            $update[5] = True;
         }
     }
 
-    // If all fields are valid, you can proceed to save the data or process it further
+    // If no error messages, redirect back to index
     if (empty($teachingHoursDoneErr) && empty($teachingHoursTotalErr) && empty($researchHoursDoneErr) &&
         empty($researchHoursTotalErr) && empty($otherHoursDoneErr) && empty($otherHoursTotalErr)) {
+        // Update all necessary fields
+
+        for ($x = 0; $x < 6; $x++) {
+            if ($update[$x]) {
+                $_SESSION[(string)$order[$x]] = (int)htmlspecialchars($_POST[(string)$order[$x]]);
+            }
+        }
+
         // Redirect to another page or display success message
         header("Location: /index.php");
         exit();
@@ -90,17 +102,23 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
     <div class="container">
         <form action="hours.php" method="POST">
             Teaching Hours Done: <input type="text" name="teachingHoursDone">
-            <div><?php echo $teachingHoursDoneErr;?></div><br>
+            <div><?php echo $teachingHoursDoneErr; ?></div>
+            <br>
             Teaching Hours Total: <input type="text" name="teachingHoursTotal">
-            <div><?php echo $teachingHoursTotalErr;?></div><br>
+            <div><?php echo $teachingHoursTotalErr; ?></div>
+            <br>
             Research Hours Done: <input type="text" name="researchHoursDone">
-            <div><?php echo $researchHoursDoneErr;?></div><br>
+            <div><?php echo $researchHoursDoneErr; ?></div>
+            <br>
             Research Hours Total: <input type="text" name="researchHoursTotal">
-            <div><?php echo $researchHoursTotalErr;?></div><br>
+            <div><?php echo $researchHoursTotalErr; ?></div>
+            <br>
             Other Hours Done: <input type="text" name="otherHoursDone">
-            <div><?php echo $otherHoursDoneErr;?></div><br>
+            <div><?php echo $otherHoursDoneErr; ?></div>
+            <br>
             Other Hours Total: <input type="text" name="otherHoursTotal">
-            <div><?php echo $otherHoursTotalErr;?></div><br>
+            <div><?php echo $otherHoursTotalErr; ?></div>
+            <br>
             <input type="submit" onclick="return inputValidation(event)">
         </form>
     </div>

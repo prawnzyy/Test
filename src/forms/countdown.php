@@ -3,6 +3,7 @@
 $pageTitle = "Form";
 
 // Logic code here
+
 // Input Validation
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_POST["pqeDate"])) {
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Include the header (navigation)
 include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 ?>
-<section>
+<section style="margin-bottom: 80px">
     <ul class="nav nav-pills nav-justified">
         <li class="nav-item">
             <a class="nav-link" href="/src/forms/modules.php">Modules</a>
@@ -31,12 +32,12 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
     <div class="container" style="width: 70%;">
         <form action="<?php echo htmlspecialchars("index.php");?>" method="POST">
             <div>
-                <label for="PQE Due Date">PQE Due Date</label>
+                <label for="PQE Due Date" class="font-weight-bold">PQE Due Date</label>
                 <input id="pqeDueDate" class="form-control" type="date" name="pqeDate"/>
             </div>
             <br>
             <div>
-                <label for="PhD Defense Due Date">PhD Defense Due Date</label>
+                <label for="PhD Defense Due Date" class="font-weight-bold">PhD Defense Due Date</label>
                 <input id="phdDueDate" class="form-control" type="date" name="phdDefDate"/>
             </div>
             <br>

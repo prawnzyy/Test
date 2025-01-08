@@ -45,7 +45,6 @@ $otherHoursDone = (int)$_SESSION["otherHoursDone"];
 $otherHoursTotal = (int)$_SESSION["otherHoursTotal"];
 $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
 ?>
-
     <main style="margin-bottom: 80px">
         <div class="row m-2">
             <div class="col-sm-3" style="height: 100%">
