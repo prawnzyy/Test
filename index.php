@@ -47,7 +47,7 @@ include 'includes/header.php';
 ?>
     <main style="margin-bottom: 80px">
         <div class="row m-2">
-            <div class="col-md-3 d-flex" style="flex-direction: column; align-items: stretch; justify-content: space-between;">
+            <div class="main-col col-md-3">
                 <div class="row" style="margin-right: 0px;">
                     <div class="profile container-fluid flex-grow-1" style="overflow: hidden; margin-bottom: 0px">
                         <img class="profile-img" src="/images/sherry.png" alt="Profile Picture">
@@ -65,7 +65,7 @@ include 'includes/header.php';
                 <div class="row" style="margin-right: 0px;">
                     <div class="profile container-fluid flex-grow-1" style="font-weight: bold; margin-bottom: 0px">
                         Reminders
-                        <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
+                        <row class="reminder">
                             <div style="float: left; display: flex; align-items: center; padding: 10px">
                                 <i class="bi bi-info-circle"></i>
                                 <div style="padding-left: 10px">
@@ -75,7 +75,7 @@ include 'includes/header.php';
                                 </div>
                             </div>
                         </row>
-                        <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
+                        <row class="reminder">
                             <div style="float: left; display: flex; align-items: center; padding: 10px">
                                 <i class="bi bi-info-circle"></i>
                                 <div style="padding-left: 10px">
@@ -88,8 +88,7 @@ include 'includes/header.php';
                     </div>
                 </div>
             </div>
-            <div class="col-md-9"
-                 style="display: flex; flex-direction: column; align-items: stretch; justify-content: space-between">
+            <div class="main-col col-md-9">
                 <div class="row flex-grow-1">
                     <div class="container-fluid" style="margin-bottom: 0px">
                         <div class="row">

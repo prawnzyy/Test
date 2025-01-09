@@ -48,9 +48,16 @@ footer {
 
 .row.m-2 {
     display: flex;
-    align-items: stretch; /* Ensures both sides have the same height */
-    height: 100%; /* Let the row take up full height */
+    align-items: stretch;
+    height: 100%;
     background-color: lightgrey;
+}
+
+.main-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between
 }
 
 .container {
@@ -87,6 +94,13 @@ footer {
 
 .error-msg {
     color: red;
+}
+
+.reminder {
+    background-color: lightpink;
+    margin-top: 7px;
+    border-radius: 8px;
+    font-weight: normal !important;
 }
 
 .profile-img {
