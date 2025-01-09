@@ -99,27 +99,60 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
                 Duties</a>
         </li>
     </ul>
-    <div class="container">
-        <form action="hours.php" method="POST">
-            Teaching Hours Done: <input type="text" name="teachingHoursDone">
-            <div><?php echo $teachingHoursDoneErr; ?></div>
+    <div class="container" style="width: 50%">
+        <form action="hours.php" method="POST" style="align-content: center">
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Teaching Hours Done:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="teachingHoursDone">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $teachingHoursDoneErr; ?></div>
             <br>
-            Teaching Hours Total: <input type="text" name="teachingHoursTotal">
-            <div><?php echo $teachingHoursTotalErr; ?></div>
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Teaching Hours Total:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="teachingHoursTotal">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $teachingHoursTotalErr; ?></div>
             <br>
-            Research Hours Done: <input type="text" name="researchHoursDone">
-            <div><?php echo $researchHoursDoneErr; ?></div>
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Research Hours Done:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="researchHoursDone">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $researchHoursDoneErr; ?></div>
             <br>
-            Research Hours Total: <input type="text" name="researchHoursTotal">
-            <div><?php echo $researchHoursTotalErr; ?></div>
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Research Hours Total:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="researchHoursTotal">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $researchHoursTotalErr; ?></div>
             <br>
-            Other Hours Done: <input type="text" name="otherHoursDone">
-            <div><?php echo $otherHoursDoneErr; ?></div>
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Other Hours Done:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="otherHoursDone">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $otherHoursDoneErr; ?></div>
             <br>
-            Other Hours Total: <input type="text" name="otherHoursTotal">
-            <div><?php echo $otherHoursTotalErr; ?></div>
+            <div class="justify-content-center row mb-3">
+                <label class="form-label col-lg-3 col-form-label" style="text-align: right">Other Hours Total:</label>
+                <div class="col-lg-4">
+                    <input type="text" class="form-control" name="otherHoursTotal">
+                </div>
+            </div>
+            <div class="error-msg"><?php echo $otherHoursTotalErr; ?></div>
             <br>
-            <input type="submit" onclick="return inputValidation(event)">
+            <div style="color: mediumpurple">
+                *Only fill in required fills*
+            </div>
+            <input type="submit">
         </form>
     </div>
 </section>

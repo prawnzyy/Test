@@ -79,18 +79,14 @@ footer {
     font-size: clamp(1rem, 1vw, 2.3rem);
 }
 
-.date-container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+@media (max-width: 992px) {
+    .form-label {
+        text-align: center !important;
+    }
 }
 
-.module-container {
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 200px);
-    gap: 10px;
+.error-msg {
+    color: red;
 }
 
 .profile-img {
@@ -101,24 +97,81 @@ footer {
     padding: 15px;
 }
 
+.profile {
+    text-align: left;
+}
+
+@media (max-width: 762px) {
+    .profile {
+        margin-right: -15px !important;
+    }
+}
+
+.module-container {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 185px);
+    justify-content: start;
+    gap: 10px;
+}
+
+.module-card {
+    background-color: lightpink;
+    padding: 5px;
+    width: 185px;
+    margin: 4px;
+    border-radius: 6px;
+}
+
+.module-card .name {
+    font-weight: bold;
+    text-align: left;
+}
+
 circle-progress::part(base) {
     margin-top: 10px;
-    width: clamp(1rem * 6.5, 1.3vw * 10, 2rem * 10);
+    width: clamp(1rem * 6.5, 1.1vw * 10, 2rem * 10);
     height: auto;
+}
+
+circle-progress::part(value) {
+    stroke-width: 2px;
+    stroke: blue;
+}
+circle-progress::part(circle) {
+    stroke: #ddd;
+    stroke-width: 2px;
+}
+
+circle-progress::part(text) {
+    font-size: clamp(1.3rem, 1.1vw, 2rem);
+}
+
+.date-container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .hours-font {
     font-size: clamp(0.8rem, 0.9vw, 1.8rem) !important;
 }
 
-.col-sm-2 {
+.clock-countdown {
     border-radius: 10px;
     text-align: center;
     padding: 5px;
     margin: 5px
 }
 
-@media (max-width: 600px) {
+@media (max-width: 576px) {
+    .pqe {
+        padding-right: 0px !important;
+    }
+}
 
+.progress-hours {
+    margin-top: 10px;
 }
 

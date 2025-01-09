@@ -11,20 +11,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["action"])) {
         if ($_POST["action"] === "Add") {
             // Code to add the module
-            echo $_POST["addmcs"];
-            if (empty($_POST["addmodname"])) {
+            if (empty($_POST["addModName"])) {
                 $addModNameErr = "Mod name cannot be empty.";
 
             }
-            if (!is_numeric($_POST["addmcs"]) || !($_POST["addmcs"] == 4 || $_POST["addmcs"] == 8)) {
+            if (!is_numeric($_POST["addMcs"]) || !($_POST["addMcs"] == 4 || $_POST["addMcs"] == 8)) {
                 $addMcsErr = "Module MCs must be either 4 or 8.";
             }
             if (empty($addModNameErr) && empty($addMcsErr)) {
-                // Redirect to another page or display success message
-                $_SESSION["modules"][] = [$_POST["addmodname"], $_POST["addmcs"]];
-                $_SESSION["mcSum"] = $_SESSION["mcSum"] + $_POST["addmcs"];
+                // Only add to modules if no errors
+                $_SESSION["modules"][] = [$_POST["addModName"], $_POST["addMcs"]];
+                $_SESSION["mcSum"] = $_SESSION["mcSum"] + $_POST["addMcs"];
             }
-        } elseif ($_POST["action"] === "Remove") {
+        } else if ($_POST["action"] === "Remove") {
             // Code to remove the module
             $modToRemove = explode(",", $_POST["moduleDropDown"]);
             $index = 0;
@@ -50,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Include the header (navigation)
 include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 ?>
-<section id="content", style="margin-bottom: 80px">
+<section id="content" , style="margin-bottom: 80px">
     <ul class="nav nav-pills nav-justified" style="justify-content: center">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/src/forms/modules.php">Modules</a>
@@ -63,23 +62,35 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
         </li>
     </ul>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-md-6">
             <div class="container" style="width: 75%; min-width: 300px">
                 <div class="font-weight-bold">
                     Add Module
                 </div>
                 <br>
                 <form action="modules.php" method="POST">
-                    Module Name: <input type="text" name="addmodname"><br>
-                    <div style="color: red"><?php echo $addModNameErr;?></div><br>
-                    Number of MCs: <input type="text" name="addmcs"><br>
-                    <div style="color: red"><?php echo $addMcsErr;?></div><br>
+                    <div class="justify-content-center row mb-3">
+                        <label class="form-label col-lg-4 col-form-label" style="text-align: right">Module Name:</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="addModName">
+                        </div>
+                    </div>
+                    <div class="error-msg"><?php echo $addModNameErr; ?></div>
+                    <br>
+                    <div class="justify-content-center row mb-3">
+                        <label class="form-label col-lg-4 col-form-label" style="text-align: right">Number of Mcs ( 4 /
+                            8 ):</label>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" name="addMcs">
+                        </div>
+                    </div>
+                    <div class="error-msg"><?php echo $addMcsErr; ?></div>
                     <br>
                     <input type="submit" name="action" value="Add">
                 </form>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-6">
             <div class="container" style="width: 75%; min-width: 300px">
                 <div class="font-weight-bold">
                     Remove Module
@@ -88,9 +99,9 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
                 <form action="modules.php" method="POST">
                     <select name="moduleDropDown">
                         <?php
-                            foreach ($modules as $module) {
-                                echo "<option value='$module[0],$module[1]'>$module[0] ($module[1] mcs)</option>";
-                            }
+                        foreach ($modules as $module) {
+                            echo "<option value='$module[0],$module[1]'>$module[0] ($module[1] mcs)</option>";
+                        }
                         ?>
                     </select><br>
                     <br>

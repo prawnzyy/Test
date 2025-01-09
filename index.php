@@ -10,7 +10,7 @@ $_SESSION["mcSum"] = ($_SESSION["mcSum"] ?? 24);
 $mcSum = $_SESSION["mcSum"];
 $graduationPercent = $mcSum / 64 * 100;
 
-// Setting of default
+// Set Default values ( PQE and PhD Defense Date)
 $currentDate = date("Y-m-d H:i:s");
 
 $_SESSION["pqeDate"] = !empty($_POST["pqeDate"])
@@ -23,13 +23,10 @@ $_SESSION["phdDefDate"] = !empty($_POST["phdDefDate"])
     : ($_SESSION["phdDefDate"] ?? "2026-04-22 00:00:00");
 $phdDefDate = $_SESSION["phdDefDate"];
 
-// Include the header (navigation)
-include 'includes/header.php';
-
-// Set Default Values
+// Set Default Values ( Done and Total Hours)
 $_SESSION["teachingHoursDone"] = ($_SESSION["teachingHoursDone"] ?? 10);
-$teachingHoursDone = (int)$_SESSION["teachingHoursDone"];
 $_SESSION["teachingHoursTotal"] = ($_SESSION["teachingHoursTotal"] ?? 40);
+$teachingHoursDone = (int)$_SESSION["teachingHoursDone"];
 $teachingHoursTotal = (int)$_SESSION["teachingHoursTotal"];
 $teachingHoursPercent = floor($teachingHoursDone / $teachingHoursTotal * 100);
 
@@ -44,64 +41,72 @@ $_SESSION["otherHoursTotal"] = ($_SESSION["otherHoursTotal"] ?? 40);
 $otherHoursDone = (int)$_SESSION["otherHoursDone"];
 $otherHoursTotal = (int)$_SESSION["otherHoursTotal"];
 $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
+
+// Include the header (navigation)
+include 'includes/header.php';
 ?>
     <main style="margin-bottom: 80px">
         <div class="row m-2">
-            <div class="col-sm-3" style="height: 100%">
-                <div class="container" style="text-align: left; overflow: hidden; height: 60%;">
-                    <img class="profile-img" src="/images/sherry.png">
-                    <b>Sherry Tan Xue Er
+            <div class="col-md-3 d-flex" style="flex-direction: column; align-items: stretch; justify-content: space-between;">
+                <div class="row" style="margin-right: 0px;">
+                    <div class="profile container-fluid flex-grow-1" style="overflow: hidden; margin-bottom: 0px">
+                        <img class="profile-img" src="/images/sherry.png" alt="Profile Picture">
+                        <b>Sherry Tan Xue Er
+                            <br>
+                            PGF Scholar</b>
                         <br>
-                        PGF Scholar</b>
-                    <br>
-                    Yr 4 PhD Student
-                    <br>
-                    School of Medicine
-                    <br>
-                    Department of Biochemistry
+                        Yr 4 PhD Student
+                        <br>
+                        School of Medicine
+                        <br>
+                        Department of Biochemistry
+                    </div>
                 </div>
-                <div class="container" style="text-align: left; height: 40%; font-weight: bold">
-                    Reminders
-                    <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
-                        <div style="float: left; display: flex; align-items: center; padding: 10px">
-                            <i class="bi bi-info-circle"></i>
-                            <div style="padding-left: 10px">
-                                Sit in for Sherry's Thesis Defense
-                                <br>
-                                Due 22 April 2023
+                <div class="row" style="margin-right: 0px;">
+                    <div class="profile container-fluid flex-grow-1" style="font-weight: bold; margin-bottom: 0px">
+                        Reminders
+                        <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
+                            <div style="float: left; display: flex; align-items: center; padding: 10px">
+                                <i class="bi bi-info-circle"></i>
+                                <div style="padding-left: 10px">
+                                    Sit in for Sherry's Thesis Defense
+                                    <br>
+                                    Due 22 April 2023
+                                </div>
                             </div>
-                        </div>
-                    </row>
-                    <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
-                        <div style="float: left; display: flex; align-items: center; padding: 10px">
-                            <i class="bi bi-info-circle"></i>
-                            <div style="padding-left: 10px">
-                                Sit in for Sherry's Thesis Defense
-                                <br>
-                                Due 22 April 2023
+                        </row>
+                        <row style="background-color: lightpink; margin-top: 7px; border-radius: 8px; font-weight: normal !important;">
+                            <div style="float: left; display: flex; align-items: center; padding: 10px">
+                                <i class="bi bi-info-circle"></i>
+                                <div style="padding-left: 10px">
+                                    Sit in for Sherry's Thesis Defense
+                                    <br>
+                                    Due 22 April 2023
+                                </div>
                             </div>
-                        </div>
-                    </row>
+                        </row>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-9" style="height: 100%;">
-                <div class="row" style="height: 30%;">
-                    <div class="container-fluid" style="margin-bottom: 0 !important;">
+            <div class="col-md-9"
+                 style="display: flex; flex-direction: column; align-items: stretch; justify-content: space-between">
+                <div class="row flex-grow-1">
+                    <div class="container-fluid" style="margin-bottom: 0px">
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="font-weight-bold">
                                     % to Graduation
                                 </div>
                                 <?php
-                                echo "<circle-progress radius='200' value=$graduationPercent max='100'></circle-progress>"
+                                echo "<circle-progress text-format='percent' value=$graduationPercent max='100'></circle-progress>"
                                 ?>
                             </div>
                             <div class="col-sm-9">
                                 <div class="row">
-                                    <div class="col-sm-6 font-weight-bold" style="text-align: left">Completed Modules
+                                    <div class="col-sm-6 font-weight-bold" style="text-align: left;">Completed Modules
                                     </div>
                                     <?php
-                                    echo "<div class='col-sm-6' style='text-align: right'> $mcSum / 64 MCs Completed</div>"
+                                    echo "<div class='col-sm-6' style='text-align: right;'> $mcSum / 64 MCs Completed</div>"
                                     ?>
                                 </div>
                                 <div class="module-container">
@@ -110,8 +115,10 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                     {
                                         $name = $elem[0];
                                         $mc = $elem[1];
-                                        echo "<div style='background-color: lightpink; padding: 5px; width: 200px; margin: 4px; border-radius: 6px'><div class='font-weight-bold' style='text-align: left'>$name</div>
-                                            <div style='text-align: left'>{$mc} units</div></div>";
+                                        echo "<div class='module-card'>
+                                                <div class='name'>$name</div>
+                                                <div style='text-align: left'>{$mc} units</div>
+                                              </div>";
                                     }
 
                                     array_walk($modules, 'makeCard');
@@ -121,15 +128,15 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                         </div>
                     </div>
                 </div>
-                <div class="row" style="height: 40%;">
-                    <div class="col-sm-6" style="padding-left: 0px !important;">
-                        <div class="container">
+                <div class="row flex-grow-1">
+                    <div class="pqe col-sm-6 d-flex" style="padding-left: 0px !important;">
+                        <div class="container flex-grow-1" style="margin-bottom: 0px">
                             <div class="font-weight-bold" style="text-align: left; margin-bottom: 5px">
                                 PQE
                             </div>
                             <div style="display: flex">
-                                <div class="col-sm-2"
-                                     style="background-color: lightpink; margin-left: 0 !important;">
+                                <div class="clock-countdown col-xl-2 col-md-3"
+                                     style="background-color: lightpink; margin-left: 0px !important;">
                                     <?php
                                     $seconds = max(strtotime($pqeDate) - strtotime($currentDate), 0);
                                     $days = floor($seconds / 86400);
@@ -137,7 +144,7 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                     ?>
                                     <div>Days</div>
                                 </div>
-                                <div class="col-sm-2"
+                                <div class="clock-countdown col-xl-2 col-md-3"
                                      style="background-color: lightpink;">
                                     <?php
                                     $seconds = max(strtotime($pqeDate) - strtotime($currentDate), 0);
@@ -172,13 +179,13 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6" style="padding-right: 0px !important; padding-left: 0px !important;">
-                        <div class="container">
+                    <div class="col-sm-6 d-flex" style="padding-right: 0px !important; padding-left: 0px !important;">
+                        <div class="container flex-grow-1" style="margin-bottom: 0px">
                             <div class="font-weight-bold" style="text-align: left; margin-bottom: 5px">
                                 PhD Defense
                             </div>
                             <div style="display: flex">
-                                <div class="col-sm-2"
+                                <div class="clock-countdown col-xl-2 col-md-3"
                                      style="background-color: lightpink; margin-left: 0 !important;">
                                     <?php
                                     $seconds = max(strtotime($phdDefDate) - strtotime($currentDate), 0);
@@ -187,7 +194,7 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                     ?>
                                     <div>Days</div>
                                 </div>
-                                <div class="col-sm-2"
+                                <div class="clock-countdown col-xl-2 col-md-3"
                                      style="background-color: lightpink;">
                                     <?php
                                     $seconds = max(strtotime($phdDefDate) - strtotime($currentDate), 0);
@@ -225,8 +232,8 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                         </div>
                     </div>
                 </div>
-                <div class="row" style="height: 30%; display: flex; align-self: end">
-                    <div class="container-fluid" style="margin-top: 0 !important;">
+                <div class="row flex-grow-1">
+                    <div class="container-fluid" style="margin-bottom: 0px;">
                         <div class="row font-weight-bold" style="text-align: left; padding-left: 15px">
                             Teaching, Research and Other Duties
                         </div>
@@ -240,7 +247,7 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                         / <?= $teachingHoursTotal ?> Hours Completed
                                     </div>
                                 </div>
-                                <div class="progress" style="height: 5px">
+                                <div class="progress progress-hours" style="height: 5px">
                                     <div class="progress-bar" role="progressbar"
                                          aria-valuenow=<?= $teachingHoursPercent ?> aria-valuemin="0"
                                          aria-valuemax="100"
@@ -255,7 +262,7 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                         / <?= $researchHoursTotal ?> Hours Completed
                                     </div>
                                 </div>
-                                <div class="progress" style="height: 5px">
+                                <div class="progress progress-hours" style="height: 5px">
                                     <div class="progress-bar" role="progressbar"
                                          aria-valuenow=<?= $researchHoursPercent ?> aria-valuemin="0"
                                          aria-valuemax="100"
@@ -269,7 +276,7 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                                         / <?= $otherHoursTotal ?> Hours Completed
                                     </div>
                                 </div>
-                                <div class="progress" style="height: 5px">
+                                <div class="progress progress-hours" style="height: 5px">
                                     <div class="progress-bar" role="progressbar"
                                          aria-valuenow=<?= $otherHoursPercent ?> aria-valuemin="0"
                                          aria-valuemax="100"
@@ -281,8 +288,6 @@ $otherHoursPercent = floor($otherHoursDone / $otherHoursTotal * 100);
                 </div>
             </div>
         </div>
-        <!--    <h2>Welcome to NUSGS UI/UX Test</h2>-->
-        <!--    <p>This is the homepage where you will need to display the dashboard. Have fun :D</p>-->
     </main>
 
     <!-- Include the footer -->
