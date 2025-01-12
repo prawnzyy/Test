@@ -57,7 +57,15 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: space-between
+    justify-content: space-between;
+    width: 100%;
+}
+
+.main-col2 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
 }
 
 .container {
@@ -113,12 +121,6 @@ footer {
 
 .profile {
     text-align: left;
-}
-
-@media (max-width: 762px) {
-    .profile {
-        margin-right: -15px !important;
-    }
 }
 
 .module-container {
@@ -182,6 +184,10 @@ circle-progress::part(text) {
 @media (max-width: 576px) {
     .pqe {
         padding-right: 0px !important;
+    }
+
+    .middle {
+        flex-direction: column !important;
     }
 }
 

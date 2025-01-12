@@ -3,6 +3,12 @@
 session_start();
 $pageTitle = "Form";
 
+require $_SERVER['DOCUMENT_ROOT'] . '/src/database/db.php';
+
+// Initialise DB
+$conn = init_connection();
+$studentID = 1;
+
 // Logic code here
 $teachingHoursDoneErr = $teachingHoursTotalErr = $researchHoursDoneErr = $researchHoursTotalErr = $otherHoursDoneErr = $otherHoursTotalErr = "";
 $teachingHoursDone = $teachingHoursTotal = $researchHoursDone = $researchHoursTotal = $otherHoursDone = $otherHoursTotal = "";
@@ -71,36 +77,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         empty($researchHoursTotalErr) && empty($otherHoursDoneErr) && empty($otherHoursTotalErr)) {
         // Update all necessary fields
 
+        $final = array();
         for ($x = 0; $x < 6; $x++) {
             if ($update[$x]) {
-                $_SESSION[(string)$order[$x]] = (int)htmlspecialchars($_POST[(string)$order[$x]]);
+                $final[$order[$x]] = (int)htmlspecialchars($_POST[(string)$order[$x]]);
+            } else {
+                $final[$x] = null;
             }
         }
+        updateHours($conn, $final, $studentID);
 
         // Redirect to another page or display success message
-        header("Location: /index.php");
-        exit();
+         header("Location: /index.php");
+         exit();
     }
 }
-
-// Include the header (navigation)
-include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 ?>
-<section id="content" style="margin-bottom: 80px">
-    <ul class="nav nav-pills nav-justified" style="justify-content: center">
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/modules.php">Modules</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/countdown.php">PQE and PhD Defense</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/src/forms/hours.php">Teaching, Research and Other
-                Duties</a>
-        </li>
-    </ul>
     <div class="container" style="width: 50%">
-        <form action="hours.php" method="POST" style="align-content: center">
+        <form action="" method="POST" style="align-content: center">
             <div class="justify-content-center row mb-3">
                 <label class="form-label col-lg-3 col-form-label" style="text-align: right">Teaching Hours Done:</label>
                 <div class="col-lg-4">
@@ -155,8 +149,5 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
             <input type="submit">
         </form>
     </div>
-</section>
 
-<!-- Include the footer -->
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'); ?>
 

@@ -1,10 +1,14 @@
 <?php
 // form.php
 session_start();
-$pageTitle = "Form";
+require $_SERVER['DOCUMENT_ROOT'] . '/src/database/db.php';
+
+// Initialise DB
+$conn = init_connection();
+$studentID = 1;
 
 $addModNameErr = $addMcsErr = "";
-$modules = $_SESSION["modules"] ?? array(["AR5652 PhD Seminar", 4], ["AR5652 Phd Lesson", 8], ["AR5653 Phd Thesis", 8], ["AR6764 R-Programming", 4]);;
+$modules = $modules = fetchModules($conn, $studentID);
 
 // Logic code here
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -20,22 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             if (empty($addModNameErr) && empty($addMcsErr)) {
                 // Only add to modules if no errors
-                $_SESSION["modules"][] = [$_POST["addModName"], $_POST["addMcs"]];
-                $_SESSION["mcSum"] = $_SESSION["mcSum"] + $_POST["addMcs"];
+//                $_SESSION["modules"][] = [$_POST["addModName"], $_POST["addMcs"]];
+//                $_SESSION["mcSum"] = $_SESSION["mcSum"] + $_POST["addMcs"];
+                $value = (int)$_POST["addMcs"];
+                insertStudentModule($conn, $_POST["addModName"], $value, $studentID);
             }
         } else if ($_POST["action"] === "Remove") {
             // Code to remove the module
             $modToRemove = explode(",", $_POST["moduleDropDown"]);
-            $index = 0;
-            foreach ($modules as $mod) {
-                if ($mod[0] == $modToRemove[0] && $mod[1] == $modToRemove[1]) {
-                    break;
-                }
-                $index = $index + 1;
-            }
-            $_SESSION["mcSum"] -= $modToRemove[1];
-            array_splice($modules, $index, 1);
-            $_SESSION["modules"] = $modules;
+            removeModule($conn, $modToRemove[0], $modToRemove[1], $studentID);
         }
     }
 
@@ -45,22 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
-
-// Include the header (navigation)
-include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
 ?>
-<section id="content" , style="margin-bottom: 80px">
-    <ul class="nav nav-pills nav-justified" style="justify-content: center">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/src/forms/modules.php">Modules</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/countdown.php">PQE and PhD Defense</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/hours.php">Teaching, Research and Other Duties</a>
-        </li>
-    </ul>
     <div class="row">
         <div class="col-md-6">
             <div class="container" style="width: 75%; min-width: 300px">
@@ -68,7 +50,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
                     Add Module
                 </div>
                 <br>
-                <form action="modules.php" method="POST">
+                <form action="" method="POST">
                     <div class="justify-content-center row mb-3">
                         <label class="form-label col-lg-4 col-form-label" style="text-align: right">Module Name:</label>
                         <div class="col-lg-4">
@@ -96,7 +78,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
                     Remove Module
                 </div>
                 <br>
-                <form action="modules.php" method="POST">
+                <form action="" method="POST">
                     <select name="moduleDropDown">
                         <?php
                         foreach ($modules as $module) {
@@ -110,7 +92,3 @@ include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
             </div>
         </div>
     </div>
-</section>
-
-<!-- Include the footer -->
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'); ?>

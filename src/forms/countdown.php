@@ -1,51 +1,41 @@
 <?php
 // form.php
-$pageTitle = "Form";
+// $pageTitle = "Form";
 
-// Logic code here
+require $_SERVER['DOCUMENT_ROOT'] . '/src/database/db.php';
 
-// Input Validation
+// Initialise DB
+$conn = init_connection();
+$studentID = 1;
+$order = array("pqeDate", "phdDefDate");
+$mapName = array("pqedate", 'phddefense');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!isset($_POST["pqeDate"])) {
-        $pqeDate = null;
+    $final = array();
+    for ($x = 0; $x < 2; $x++) {
+        $final[$mapName[$x]] = htmlspecialchars($_POST[(string)$order[$x]]);
     }
-    if (empty($_POST["phdDefDate"])) {
-        $phdDefDate = null;
-    }
+    updateCountdown($conn, $final, $studentID);
+    header("Location: /index.php");
+    exit();
 }
 
-// Include the header (navigation)
-include($_SERVER['DOCUMENT_ROOT'] . '/includes/header.php');
+// Logic code here
 ?>
-<section style="margin-bottom: 80px">
-    <ul class="nav nav-pills nav-justified">
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/modules.php">Modules</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/src/forms/countdown.php">PQE and PhD Defense</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/src/forms/hours.php">Teaching, Research and Other Duties</a>
-        </li>
-    </ul>
-    <div class="container" style="width: 70%;">
-        <form action="<?php echo htmlspecialchars("index.php");?>" method="POST">
-            <div>
-                <label for="PQE Due Date" class="font-weight-bold">PQE Due Date</label>
-                <input id="pqeDueDate" class="form-control" type="date" name="pqeDate"/>
-            </div>
-            <br>
-            <div>
-                <label for="PhD Defense Due Date" class="font-weight-bold">PhD Defense Due Date</label>
-                <input id="phdDueDate" class="form-control" type="date" name="phdDefDate"/>
-            </div>
-            <br>
-            <input type="submit">
-        </form>
-    </div>
-</section>
+<div class="container" style="width: 70%;">
+    <form action="" method="POST">
+        <div>
+            <label for="PQE Due Date" class="font-weight-bold">PQE Due Date</label>
+            <input id="pqeDueDate" class="form-control" type="date" name="pqeDate"/>
+        </div>
+        <br>
+        <div>
+            <label for="PhD Defense Due Date" class="font-weight-bold">PhD Defense Due Date</label>
+            <input id="phdDueDate" class="form-control" type="date" name="phdDefDate"/>
+        </div>
+        <br>
+        <input type="submit">
+    </form>
+</div>
 
-<!-- Include the footer -->
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'); ?>
 

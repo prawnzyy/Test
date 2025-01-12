@@ -17,7 +17,7 @@
     <nav>
         <div>
             <a href="/index.php">Home</a>
-            <a href="/src/forms/modules.php">Form</a>
+            <a href="/form.php">Form</a>
         </div>
     </nav>
 </header>
