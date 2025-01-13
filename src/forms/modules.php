@@ -24,8 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             if (empty($addModNameErr) && empty($addMcsErr)) {
                 // Only add to modules if no errors
-//                $_SESSION["modules"][] = [$_POST["addModName"], $_POST["addMcs"]];
-//                $_SESSION["mcSum"] = $_SESSION["mcSum"] + $_POST["addMcs"];
                 $value = (int)$_POST["addMcs"];
                 insertStudentModule($conn, $_POST["addModName"], $value, $studentID);
             }

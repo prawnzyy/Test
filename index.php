@@ -12,7 +12,8 @@ $conn = init_connection();
 $pageTitle = "Home Page";
 $studentID = 1; // HARDCODED VALUE!
 
-function mcSum($modules) :int {
+function mcSum($modules): int
+{
     $total = 0;
     foreach ($modules as $module) {
         $total += $module[1];
@@ -36,9 +37,9 @@ $hours = fetchHours($conn, $studentID);
 $typeHours = array("teachingHours", "researchHours", "otherHours");
 
 for ($i = 0; $i < count($typeHours); $i++) {
-    ${$typeHours[$i] . "Done"}  = $hours[$i * 2];
-    ${$typeHours[$i] . "Total"}  = $hours[($i * 2) + 1];
-    ${$typeHours[$i] . "Percent"}  = ${$typeHours[$i] . "Done"} / ${$typeHours[$i] . "Total"} * 100;
+    ${$typeHours[$i] . "Done"} = $hours[$i * 2];
+    ${$typeHours[$i] . "Total"} = $hours[($i * 2) + 1];
+    ${$typeHours[$i] . "Percent"} = ${$typeHours[$i] . "Done"} / ${$typeHours[$i] . "Total"} * 100;
 }
 
 // Include the header (navigation)
@@ -86,40 +87,38 @@ include 'includes/header.php';
 
             </div>
             <div class="main-col col-md-9">
-                <div class="div flex-grow-1">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="font-weight-bold">
-                                    % to Graduation
+                <div class="container-fluid flex-grow-1">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="font-weight-bold">
+                                % to Graduation
+                            </div>
+                            <?php
+                            echo "<circle-progress text-format='percent' value=$graduationPercent max='100'></circle-progress>"
+                            ?>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-6 font-weight-bold" style="text-align: left;">Completed Modules
                                 </div>
                                 <?php
-                                echo "<circle-progress text-format='percent' value=$graduationPercent max='100'></circle-progress>"
+                                echo "<div class='col-sm-6' style='text-align: right;'> $mcSum / 64 MCs Completed</div>"
                                 ?>
                             </div>
-                            <div class="col-sm-9">
-                                <div class="row">
-                                    <div class="col-sm-6 font-weight-bold" style="text-align: left;">Completed Modules
-                                    </div>
-                                    <?php
-                                    echo "<div class='col-sm-6' style='text-align: right;'> $mcSum / 64 MCs Completed</div>"
-                                    ?>
-                                </div>
-                                <div class="module-container">
-                                    <?php
-                                    function makeCard($elem)
-                                    {
-                                        $name = $elem[0];
-                                        $mc = $elem[1];
-                                        echo "<div class='module-card'>
+                            <div class="module-container">
+                                <?php
+                                function makeCard($elem)
+                                {
+                                    $name = $elem[0];
+                                    $mc = $elem[1];
+                                    echo "<div class='module-card'>
                                                 <div class='name'>$name</div>
                                                 <div style='text-align: left'>{$mc} units</div>
                                               </div>";
-                                    }
+                                }
 
-                                    array_walk($modules, 'makeCard');
-                                    ?>
-                                </div>
+                                array_walk($modules, 'makeCard');
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -186,40 +185,38 @@ include 'includes/header.php';
                     <?php }
                     ?>
                 </div>
-                <div class="div flex-grow-1" style="align-content: end">
-                    <div class="container-fluid">
-                        <div class="row font-weight-bold" style="text-align: left; padding-left: 15px">
-                            Teaching, Research and Other Duties
-                        </div>
-                        <br>
-                        <div class="row hours-font">
-                            <?php
-                            $duties = array("Teaching Duties", "Research Duties", "Other Duties");
-                            $hours = array([$teachingHoursDone, $teachingHoursTotal, $teachingHoursPercent],
-                                [$researchHoursDone, $researchHoursTotal, $researchHoursPercent],
-                                [$otherHoursDone, $otherHoursTotal, $otherHoursPercent]);
-                            for ($x = 0; $x < 3; $x++) {
-                                ?>
-                                <div class="col-sm-4">
-                                    <div class="row">
-                                        <div class="col-sm-6 font-weight-bold" style="text-align: left">
-                                            <?php echo $duties[$x] ?>
-                                        </div>
-                                        <div class="col-sm-6" style="text-align: right"> <?= $hours[$x][0] ?>
-                                            / <?= $hours[$x][1] ?> Hours Completed
-                                        </div>
+                <div class="container-fluid flex-grow-1">
+                    <div class="row font-weight-bold" style="text-align: left; padding-left: 15px">
+                        Teaching, Research and Other Duties
+                    </div>
+                    <br>
+                    <div class="row hours-font">
+                        <?php
+                        $duties = array("Teaching Duties", "Research Duties", "Other Duties");
+                        $hours = array([$teachingHoursDone, $teachingHoursTotal, $teachingHoursPercent],
+                            [$researchHoursDone, $researchHoursTotal, $researchHoursPercent],
+                            [$otherHoursDone, $otherHoursTotal, $otherHoursPercent]);
+                        for ($x = 0; $x < 3; $x++) {
+                            ?>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-6 font-weight-bold" style="text-align: left">
+                                        <?php echo $duties[$x] ?>
                                     </div>
-                                    <div class="progress progress-hours" style="height: 5px">
-                                        <div class="progress-bar" role="progressbar"
-                                             aria-valuenow=<?= $hours[$x][2] ?> aria-valuemin="0"
-                                             aria-valuemax="100"
-                                             style="width: <?= $hours[$x][2] ?>%; background-color: blue !important;"></div>
+                                    <div class="col-sm-6" style="text-align: right"> <?= $hours[$x][0] ?>
+                                        / <?= $hours[$x][1] ?> Hours Completed
                                     </div>
                                 </div>
+                                <div class="progress progress-hours" style="height: 5px">
+                                    <div class="progress-bar" role="progressbar"
+                                         aria-valuenow=<?= $hours[$x][2] ?> aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         style="width: <?= $hours[$x][2] ?>%; background-color: blue !important;"></div>
+                                </div>
+                            </div>
                             <?php
-                            } ?>
+                        } ?>
 
-                        </div>
                     </div>
                 </div>
             </div>
