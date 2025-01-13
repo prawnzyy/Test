@@ -13,14 +13,14 @@ function init_connection()
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 // setting the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // echo "Connected successfully";
         return $conn;
-        echo "Connected successfully";
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
 }
 
-function create_tables($conn) :void
+function create_tables($conn): void
 {
     try {
         $sql = "CREATE TABLE IF NOT EXISTS Students (
@@ -76,7 +76,7 @@ function create_tables($conn) :void
     }
 }
 
-function insertData($conn) :void
+function insertData($conn): void
 {
     try {
         $sql = "INSERT INTO Students VALUES (1, 'Sherry', 'PGF Scholar', 4, 'School of Medicine', 'Department of Biochemistry')";
@@ -101,7 +101,8 @@ function insertData($conn) :void
     }
 }
 
-function dropTable($conn) :void {
+function dropTable($conn): void
+{
     try {
         $sql = "DROP TABLE IF EXISTS StudentsModules, Modules, Countdown, Hours, Students";
         $conn->exec($sql);
@@ -110,72 +111,121 @@ function dropTable($conn) :void {
     }
 }
 
-function resetDB($conn) :void {
+function resetDB($conn): void
+{
     dropTable($conn);
     create_tables($conn);
     insertData($conn);
 }
 
-function fetchModules($conn, $studentID) :array {
-    $modules = array();
-    $sql = "Select modulename, modulemcs from Modules where moduleID in 
+function fetchModules($conn, $studentID): array
+{
+    try {
+        $modules = array();
+        $sql = "Select modulename, modulemcs from Modules where moduleID in 
                                                 (SELECT moduleID FROM StudentsModules Where studentID = $studentID)";
-    $result = $conn->query($sql);
-    while ($row = $result->fetch()) {
-        $modules[] = $row;
+        $result = $conn->query($sql);
+        while ($row = $result->fetch()) {
+            $modules[] = $row;
+        }
+        return $modules;
+    } catch (PDOException $e) {
+        echo "Unable to fetch data:" . $e->getMessage();
     }
-    return $modules;
+    return array();
 }
 
-function fetchDates($conn, $studentID) :array {
-    $sql = "Select pqedate, phddefense from Countdown where studentID = $studentID";
-    $result = $conn->query($sql);
-    return $result->fetch();
+function fetchDates($conn, $studentID): array
+{
+    try {
+        $sql = "Select pqedate, phddefense from Countdown where studentID = $studentID";
+        $result = $conn->query($sql);
+        return $result->fetch();
+    } catch (PDOException $e) {
+        echo "Unable to fetch data:" . $e->getMessage();
+    }
+    return array();
 }
 
-function fetchHours($conn, $studentID) :array {
-    $sql = "Select teachinghoursdone, teachinghourstotal, researchhoursdone, researchhourstotal, otherhoursdone, otherhourstotal FROM Hours where studentID = $studentID";
-    $result = $conn->query($sql);
-    return $result->fetch();
+function fetchHours($conn, $studentID): array
+{
+    try {
+        $sql = "Select teachinghoursdone, teachinghourstotal, researchhoursdone, researchhourstotal, otherhoursdone, otherhourstotal FROM Hours where studentID = $studentID";
+        $result = $conn->query($sql);
+        return $result->fetch();
+    } catch (PDOException $e) {
+        echo "Unable to fetch data:" . $e->getMessage();
+    }
+    return array();
 }
 
-function insertStudentModule($conn, $moduleName, $moduleMCs, $studentID) :void {
-    // First check if module exists
-    $sql = "Select moduleID FROM Modules where (modulename = '$moduleName' and modulemcs = '$moduleMCs') ";
-    $result = $conn->query($sql);
-    $id = $result->fetch();
-    if ($id) {
-        $sql = "INSERT INTO StudentsModules (studentID, moduleID) VALUES ('$studentID', '$id[0]')";
-        $conn->exec($sql);
-    } else {
-        $sql = "INSERT INTO Modules (modulename, modulemcs) VALUES ('$moduleName', '$moduleMCs')";
-        $conn->exec($sql);
-        $sql = "Select moduleID FROM Modules where modulename = '$moduleName' and modulemcs = '$moduleMCs' ";
+function insertStudentModule($conn, $moduleName, $moduleMCs, $studentID): void
+{
+    try {
+        // First check if module exists
+        $sql = "Select moduleID FROM Modules where (modulename = :moduleName and modulemcs = :moduleMCs) ";
+        $stmt = $conn->prepare($sql);
+
+        // Bind the corresponding parameters
+        $stmt->bindParam(':moduleName', $moduleName);
+        $stmt->bindParam(':moduleMCs', $moduleMCs);
+
+        // Exec and Obtain result
+        $stmt->execute();
+        $id = $stmt->fetch();
+        if ($id) {
+            $sql = "INSERT INTO StudentsModules (studentID, moduleID) VALUES ('$studentID', '$id[0]')";
+            $conn->exec($sql);
+        } else {
+            $sql = "INSERT INTO Modules (modulename, modulemcs) VALUES (:moduleName, :moduleMCs)";
+            $stmt = $conn->prepare($sql);
+            // Bind the corresponding parameters
+            $stmt->bindParam(':moduleName', $moduleName);
+            $stmt->bindParam(':moduleMCs', $moduleMCs);
+            // Exec and Obtain result
+            $stmt->execute();
+
+            $sql = "Select moduleID FROM Modules where (modulename = :moduleName and modulemcs = :moduleMCs) ";
+            $stmt = $conn->prepare($sql);
+
+            // Bind the corresponding parameters
+            $stmt->bindParam(':moduleName', $moduleName);
+            $stmt->bindParam(':moduleMCs', $moduleMCs);
+
+            // Exec and Obtain result
+            $stmt->execute();
+            $id = $stmt->fetch();
+            $sql = "INSERT INTO StudentsModules (studentID, moduleID) VALUES ('$studentID', '$id[0]')";
+            $conn->exec($sql);
+        }
+    } catch (PDOException $e) {
+        echo "Unable to insert data:" . $e->getMessage();
+    }
+}
+
+function removeModule($conn, $moduleName, $moduleMCs, $studentID): void
+{
+    try {
+        $sql = "Select moduleID FROM Modules where (modulename = '$moduleName' and modulemcs = '$moduleMCs') ";
         $result = $conn->query($sql);
         $id = $result->fetch();
-        $sql = "INSERT INTO StudentsModules (studentID, moduleID) VALUES ('$studentID', '$id[0]')";
+        $sql = "DELETE FROM StudentsModules where studentID = $studentID and moduleID = $id[0]";
         $conn->exec($sql);
+    } catch (PDOException $e) {
+        echo "Unable to remove module:" . $e->getMessage();
     }
 }
 
-function removeModule($conn, $moduleName, $moduleMCs, $studentID) :void {
-    $sql = "Select moduleID FROM Modules where (modulename = '$moduleName' and modulemcs = '$moduleMCs') ";
-    $result = $conn->query($sql);
-    $id = $result->fetch();
-    $sql = "DELETE FROM StudentsModules where studentID = $studentID and moduleID = $id[0]";
-    $conn->exec($sql);
-}
-
-function updateHours($conn, $hours, $studentID) :void {
+function updateHours($conn, $hours, $studentID): void
+{
     try {
-        // Filter out null values from updates
+        // Filter out null values from hours
         $validUpdates = array_filter($hours, function ($value) {
             return $value !== null;
         });
 
-        // If no valid updates, return
+        // If no valid updates, just return
         if (empty($validUpdates)) {
-            echo "No updates to make.";
             return;
         }
 
@@ -205,11 +255,13 @@ function updateHours($conn, $hours, $studentID) :void {
     }
 }
 
-function updateCountdown($conn, $final, $studentID) :void {
+function updateCountdown($conn, $final, $studentID): void
+{
     try {
+        echo $final;
         // Filter out null values from updates
         $validUpdates = array_filter($final, function ($value) {
-            return $value !== null;
+            return $value !== "";
         });
 
         // If no valid updates, return

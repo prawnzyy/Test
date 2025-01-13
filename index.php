@@ -8,9 +8,6 @@ require 'src/database/db.php';
 $conn = init_connection();
 //resetDB($conn);
 
-// Seems like cannot store connection, so need to re-establish for each file
-// $_SESSION["conn"] = $conn;
-
 // index.php
 $pageTitle = "Home Page";
 $studentID = 1; // HARDCODED VALUE!
